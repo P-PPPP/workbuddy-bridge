@@ -1,0 +1,38 @@
+{
+  "name": "workbuddy-local-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local seven-tool MCP server for dedicated native WorkBuddy worker sessions on Windows",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:live": "node test/live.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "configure": "node scripts/print-config.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "zod": "4.6.7"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/P-PPPP/workbuddy-local-worker.git"
+  },
+  "homepage": "https://github.com/P-PPPP/workbuddy-local-worker#readme",
+  "bugs": {
+    "url": "https://github.com/P-PPPP/workbuddy-local-worker/issues"
+  },
+  "keywords": [
+    "mcp",
+    "workbuddy",
+    "acp",
+    "local-worker",
+    "windows",
+    "ai-agents"
+  ]
+}
