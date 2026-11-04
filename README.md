@@ -14,41 +14,11 @@ Ask your assistant to give WorkBuddy a task and bring back the result. It can us
 
 ## Get started
 
-You'll need **Windows**, WorkBuddy installed and signed in, [Node.js 24+](https://nodejs.org/), and Git. Your AI app must support adding an MCP server.
+Copy this and send it to your AI assistant to install:
 
-### 1. Download and install
+> Install WorkBuddy Bridge for me: https://github.com/P-PPPP/workbuddy-bridge
 
-Open PowerShell in the folder where you want to keep the project:
-
-```powershell
-git clone https://github.com/P-PPPP/workbuddy-bridge.git
-cd workbuddy-bridge
-npm ci --ignore-scripts --no-audit --no-fund
-```
-
-### 2. Connect your AI app
-
-Run this command to print the connection settings for your computer:
-
-```powershell
-node scripts/print-config.mjs
-```
-
-Copy the generated `workbuddy-bridge` entry into your AI app's MCP settings. Keep any existing entries, then restart or reconnect the app.
-
-You don't need to copy a WorkBuddy login token or start a separate service.
-
-### 3. Try it in your chat
-
-Send this to your AI assistant:
-
-> Connect to WorkBuddy Bridge and show me the available WorkBuddy models. Ask me which model to use before starting a task.
-
-After choosing a model, try:
-
-> Ask WorkBuddy to reply “Hello from WorkBuddy.”
-
-Your assistant should send the request and bring the reply back into your chat.
+[Manual installation](docs/REFERENCE.md#installation)
 
 ## Example: make a chart in Origin
 

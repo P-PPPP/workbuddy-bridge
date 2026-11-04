@@ -14,41 +14,11 @@
 
 ## 开始使用
 
-你需要一台 **Windows 电脑**、已安装并登录的 WorkBuddy、[Node.js 24 或更高版本](https://nodejs.org/)，以及 Git。你使用的 AI 应用需要支持添加 MCP 服务。
+复制下面这句话，发给你的 AI 助手即可安装：
 
-### 1. 下载并安装
+> 帮我安装 WorkBuddy Bridge：https://github.com/P-PPPP/workbuddy-bridge
 
-在你想存放项目的文件夹中打开 PowerShell，执行：
-
-```powershell
-git clone https://github.com/P-PPPP/workbuddy-bridge.git
-cd workbuddy-bridge
-npm ci --ignore-scripts --no-audit --no-fund
-```
-
-### 2. 连接你的 AI 应用
-
-执行下面的命令，生成适用于这台电脑的连接配置：
-
-```powershell
-node scripts/print-config.mjs
-```
-
-把输出中的 `workbuddy-bridge` 条目添加到 AI 应用的 MCP 设置里，保留已有的其他条目，然后重启应用或重新连接。
-
-无需复制 WorkBuddy 的登录令牌，也不用另外启动后台服务。
-
-### 3. 在聊天中试一试
-
-先对你的 AI 助手说：
-
-> 连接 WorkBuddy Bridge，列出 WorkBuddy 可用的模型。开始任务前，先问我要用哪个模型。
-
-选好模型后，再试试：
-
-> 请让 WorkBuddy 回复“你好，WorkBuddy”。
-
-你的 AI 助手会发送任务，并把 WorkBuddy 的回复带回当前聊天。
+[手动安装](docs/REFERENCE.zh-CN.md#安装)
 
 ## 示例：用 Origin 画图
 
