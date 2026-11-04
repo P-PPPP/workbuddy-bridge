@@ -234,7 +234,7 @@ export class Controller {
       return { ...this.taskSummary(t), connection: s.connection, selected_model: s.model, response_model: t.response_model, mcp_servers: s.mcp_servers, skills: s.skills, phase: t.phase, pending_input: t.pending_input, last_event_at: t.last_event_at, forced_worker_termination: t.forced_worker_termination ?? false };
     }
     if (session_id) { const s = this.getSession(session_id); return clean({ session_id: s.id, connection: s.connection, active_task_id: s.active_task_id, selected_model: s.model, mcp_servers: s.mcp_servers, skills: s.skills, native_capabilities: s.native_capabilities }); }
-    return { server: 'workbuddy-local-worker', version: '0.1.0', transport: 'stdio', status: 'ready', managed_sessions: [...this.sessions.values()].map(s => ({ session_id: s.id, connection: s.connection, active_task_id: s.active_task_id, selected_model: s.model })), defaults: this.defaults, scope: 'listener-owned native ACP sessions', authentication: 'Desktop access token is loaded inside each native worker, kept in memory, and never returned over MCP.', ...publicCatalog(await catalogs()) };
+    return { server: 'workbuddy-bridge', version: '0.1.0', transport: 'stdio', status: 'ready', managed_sessions: [...this.sessions.values()].map(s => ({ session_id: s.id, connection: s.connection, active_task_id: s.active_task_id, selected_model: s.model })), defaults: this.defaults, scope: 'listener-owned native ACP sessions', authentication: 'Desktop access token is loaded inside each native worker, kept in memory, and never returned over MCP.', ...publicCatalog(await catalogs()) };
   }
   async close() {
     this.closing = true;

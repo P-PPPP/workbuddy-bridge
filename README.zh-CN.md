@@ -1,4 +1,4 @@
-# Workbuddy Local Worker
+# WorkBuddy Bridge
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
@@ -21,8 +21,8 @@
 在你想存放项目的文件夹中打开 PowerShell，执行：
 
 ```powershell
-git clone https://github.com/P-PPPP/workbuddy-local-worker.git
-cd workbuddy-local-worker
+git clone https://github.com/P-PPPP/workbuddy-bridge.git
+cd workbuddy-bridge
 npm ci --ignore-scripts --no-audit --no-fund
 ```
 
@@ -34,7 +34,7 @@ npm ci --ignore-scripts --no-audit --no-fund
 node scripts/print-config.mjs
 ```
 
-把输出中的 `workbuddy-local-worker` 条目添加到 AI 应用的 MCP 设置里，保留已有的其他条目，然后重启应用或重新连接。
+把输出中的 `workbuddy-bridge` 条目添加到 AI 应用的 MCP 设置里，保留已有的其他条目，然后重启应用或重新连接。
 
 无需复制 WorkBuddy 的登录令牌，也不用另外启动后台服务。
 
@@ -42,7 +42,7 @@ node scripts/print-config.mjs
 
 先对你的 AI 助手说：
 
-> 连接 Workbuddy Local Worker，列出 WorkBuddy 可用的模型。开始任务前，先问我要用哪个模型。
+> 连接 WorkBuddy Bridge，列出 WorkBuddy 可用的模型。开始任务前，先问我要用哪个模型。
 
 选好模型后，再试试：
 
@@ -81,7 +81,7 @@ node scripts/print-config.mjs
 
 **提示需要登录 WorkBuddy？** 在桌面应用中重新登录，然后让 AI 助手新建一个任务会话。
 
-工具用法、更多设置及故障排查见[技术参考](docs/REFERENCE.zh-CN.md)。你也可以[提交问题](https://github.com/P-PPPP/workbuddy-local-worker/issues)。
+工具用法、更多设置及故障排查见[技术参考](docs/REFERENCE.zh-CN.md)。你也可以[提交问题](https://github.com/P-PPPP/workbuddy-bridge/issues)。
 
 已在 Windows 上的 WorkBuddy 5.9.3 测试。这是非官方项目，WorkBuddy 更新后可能需要适配。
 

@@ -34,7 +34,7 @@ export async function resolveSelection(selection) {
   for (const id of selection.mcp_servers) {
     const entry = c.servers[id];
     if (!entry) throw new ListenerError('MCP_NOT_FOUND', `MCP server '${id}' is not configured.`);
-    if (/workbuddy[-_]?(?:listener|local[-_]?worker)/i.test(id)) throw new ListenerError('RECURSIVE_LISTENER', 'The listener cannot load itself as a worker MCP server.');
+    if (/workbuddy[-_]?(?:bridge|listener|local[-_]?worker)/i.test(id)) throw new ListenerError('RECURSIVE_LISTENER', 'WorkBuddy Bridge cannot load itself as a worker MCP server.');
     servers[id] = { ...entry, disabled: false };
   }
   const text = [];

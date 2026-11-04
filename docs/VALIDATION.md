@@ -13,7 +13,7 @@ This document records dated local observations, not an official WorkBuddy compat
 
 The live checks covered all seven tools, duplicate/conflicting request IDs, busy-session rejection, authenticated replies, cursor/final output, immediate terminal waits, acknowledged model selection and an actual follow-up response on that model, selected echo MCP execution, a sentinel skill, and confirmed native cancellation.
 
-The original implementation was called WorkBuddy MCP Listener. This repository packages it as **Workbuddy Local Worker**, preserving the seven tool names and legacy environment variable names. Unit and no-model MCP smoke checks are rerun for the public release; no additional live model execution is implied by the rename.
+The original implementation was called WorkBuddy MCP Listener. This repository packages it as **WorkBuddy Bridge**, preserving the seven tool names and legacy environment variable names. Unit and no-model MCP smoke checks are rerun for the public release; no additional live model execution is implied by the rename.
 
 Public release preparation: **15 automated tests passed**, including two additional checks for the renamed recursion guard and explicit live-test consent/model requirements. The generated MCP client configuration also passed the no-model smoke test. No new WorkBuddy model request was made for publication.
 

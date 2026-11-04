@@ -1,4 +1,4 @@
-# Workbuddy Local Worker
+# WorkBuddy Bridge
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
@@ -21,8 +21,8 @@ You'll need **Windows**, WorkBuddy installed and signed in, [Node.js 24+](https:
 Open PowerShell in the folder where you want to keep the project:
 
 ```powershell
-git clone https://github.com/P-PPPP/workbuddy-local-worker.git
-cd workbuddy-local-worker
+git clone https://github.com/P-PPPP/workbuddy-bridge.git
+cd workbuddy-bridge
 npm ci --ignore-scripts --no-audit --no-fund
 ```
 
@@ -34,7 +34,7 @@ Run this command to print the connection settings for your computer:
 node scripts/print-config.mjs
 ```
 
-Copy the generated `workbuddy-local-worker` entry into your AI app's MCP settings. Keep any existing entries, then restart or reconnect the app.
+Copy the generated `workbuddy-bridge` entry into your AI app's MCP settings. Keep any existing entries, then restart or reconnect the app.
 
 You don't need to copy a WorkBuddy login token or start a separate service.
 
@@ -42,7 +42,7 @@ You don't need to copy a WorkBuddy login token or start a separate service.
 
 Send this to your AI assistant:
 
-> Connect to Workbuddy Local Worker and show me the available WorkBuddy models. Ask me which model to use before starting a task.
+> Connect to WorkBuddy Bridge and show me the available WorkBuddy models. Ask me which model to use before starting a task.
 
 After choosing a model, try:
 
@@ -81,7 +81,7 @@ You can also ask:
 
 **WorkBuddy needs you to sign in?** Sign in again in the desktop app, then ask your assistant to start a new task session.
 
-For tool details, custom settings, and troubleshooting, see the [technical reference](docs/REFERENCE.md). You can also [report an issue](https://github.com/P-PPPP/workbuddy-local-worker/issues).
+For tool details, custom settings, and troubleshooting, see the [technical reference](docs/REFERENCE.md). You can also [report an issue](https://github.com/P-PPPP/workbuddy-bridge/issues).
 
 Tested with WorkBuddy 5.9.3 on Windows. This is an unofficial project; compatibility may change after WorkBuddy updates.
 

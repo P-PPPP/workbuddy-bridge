@@ -10,7 +10,7 @@ import { resolveSelection } from '../src/catalog.mjs';
 test('new and legacy worker names cannot be selected recursively', async()=>{
  const dir=await fs.mkdtemp(path.join(os.tmpdir(),'workbuddy-recursion-test-'));
  const previous=process.env.WORKBUDDY_LISTENER_CONFIG;
- const names=['workbuddy-local-worker','workbuddy_local_worker','WorkbuddyLocalWorker','workbuddy-listener'];
+ const names=['workbuddy-bridge','workbuddy_bridge','WorkBuddyBridge','workbuddy-local-worker','workbuddy_local_worker','WorkbuddyLocalWorker','workbuddy-listener'];
  const config=path.join(dir,'listener.config.json');
  await fs.writeFile(config,JSON.stringify({mcpServers:Object.fromEntries([...names,'ordinary-echo'].map(id=>[id,{command:'node',args:[]}]))}));
  process.env.WORKBUDDY_LISTENER_CONFIG=config;
