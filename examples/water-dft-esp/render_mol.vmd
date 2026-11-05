@@ -1,0 +1,36 @@
+# VMD headless render: plain molecular geometry preview (no isosurface)
+display resize 2400 1800
+display projection Orthographic
+display depthcue off
+display rendermode GLSL
+color Display Background white
+axes location off
+
+mol new water_density.cub
+mol delrep 0 0
+
+mol representation Licorice 0.12 25.0
+mol color Element
+mol selection {all}
+mol material Opaque
+mol addrep 0
+
+mol representation VDW 0.35 25.0
+mol color Element
+mol selection {all}
+mol material Opaque
+mol addrep 0
+
+rotate x by 0
+rotate y by 90
+rotate z by 90
+scale by 0.85
+
+light 0 on
+light 1 on
+light 2 off
+light 3 on
+
+render Tachyon mol-preview-scene.dat
+puts "SCENE_WRITTEN"
+quit

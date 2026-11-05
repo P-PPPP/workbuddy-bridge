@@ -1,0 +1,446 @@
+{
+  "captured_at": "2026-11-05T04:16:22.129Z",
+  "status": "final",
+  "workbuddy_version": "5.9.3",
+  "scope": "The initial calculation turn and its documentation follow-up. Main-assistant work and numerical programs are outside this model-token record.",
+  "usage": {
+    "source": "native_model_call_log",
+    "coverage": "completed_model_calls_with_reported_usage",
+    "reported_calls": 35,
+    "calls_without_usage": 0,
+    "input_tokens": 1644455,
+    "output_tokens": 19717,
+    "total_tokens": 1664172,
+    "cached_read_tokens": 1461760,
+    "cached_write_tokens": 0
+  },
+  "sessions": [
+    {
+      "label": "initial_calculation",
+      "task_status": "unknown",
+      "error_code": "ACP_TIMEOUT",
+      "usage": {
+        "source": "native_model_call_log",
+        "coverage": "completed_model_calls_with_reported_usage",
+        "reported_calls": 23,
+        "calls_without_usage": 0,
+        "input_tokens": 1221437,
+        "output_tokens": 16629,
+        "total_tokens": 1238066,
+        "cached_read_tokens": 1125440,
+        "cached_write_tokens": 0
+      },
+      "calls": [
+        {
+          "step": 1,
+          "attempt_no": 1,
+          "input_tokens": 30647,
+          "output_tokens": 609,
+          "total_tokens": 31256,
+          "cached_read_tokens": 0,
+          "cached_write_tokens": 0,
+          "duration_ms": 25205,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 2,
+          "attempt_no": 1,
+          "input_tokens": 31347,
+          "output_tokens": 121,
+          "total_tokens": 31468,
+          "cached_read_tokens": 8704,
+          "cached_write_tokens": 0,
+          "duration_ms": 19607,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 3,
+          "attempt_no": 1,
+          "input_tokens": 40028,
+          "output_tokens": 431,
+          "total_tokens": 40459,
+          "cached_read_tokens": 31296,
+          "cached_write_tokens": 0,
+          "duration_ms": 13983,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 4,
+          "attempt_no": 1,
+          "input_tokens": 43599,
+          "output_tokens": 939,
+          "total_tokens": 44538,
+          "cached_read_tokens": 40000,
+          "cached_write_tokens": 0,
+          "duration_ms": 26660,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 5,
+          "attempt_no": 1,
+          "input_tokens": 44839,
+          "output_tokens": 260,
+          "total_tokens": 45099,
+          "cached_read_tokens": 43584,
+          "cached_write_tokens": 0,
+          "duration_ms": 10918,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 6,
+          "attempt_no": 1,
+          "input_tokens": 45304,
+          "output_tokens": 150,
+          "total_tokens": 45454,
+          "cached_read_tokens": 44800,
+          "cached_write_tokens": 0,
+          "duration_ms": 7843,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 7,
+          "attempt_no": 1,
+          "input_tokens": 45713,
+          "output_tokens": 322,
+          "total_tokens": 46035,
+          "cached_read_tokens": 45248,
+          "cached_write_tokens": 0,
+          "duration_ms": 29215,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 8,
+          "attempt_no": 1,
+          "input_tokens": 46840,
+          "output_tokens": 4538,
+          "total_tokens": 51378,
+          "cached_read_tokens": 45696,
+          "cached_write_tokens": 0,
+          "duration_ms": 133250,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 9,
+          "attempt_no": 1,
+          "input_tokens": 51572,
+          "output_tokens": 601,
+          "total_tokens": 52173,
+          "cached_read_tokens": 46784,
+          "cached_write_tokens": 0,
+          "duration_ms": 17007,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 10,
+          "attempt_no": 1,
+          "input_tokens": 52242,
+          "output_tokens": 125,
+          "total_tokens": 52367,
+          "cached_read_tokens": 51520,
+          "cached_write_tokens": 0,
+          "duration_ms": 6861,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 11,
+          "attempt_no": 1,
+          "input_tokens": 52837,
+          "output_tokens": 311,
+          "total_tokens": 53148,
+          "cached_read_tokens": 52224,
+          "cached_write_tokens": 0,
+          "duration_ms": 13803,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 12,
+          "attempt_no": 1,
+          "input_tokens": 54489,
+          "output_tokens": 844,
+          "total_tokens": 55333,
+          "cached_read_tokens": 52800,
+          "cached_write_tokens": 0,
+          "duration_ms": 22174,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 13,
+          "attempt_no": 1,
+          "input_tokens": 56179,
+          "output_tokens": 599,
+          "total_tokens": 56778,
+          "cached_read_tokens": 54464,
+          "cached_write_tokens": 0,
+          "duration_ms": 18046,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 14,
+          "attempt_no": 1,
+          "input_tokens": 56873,
+          "output_tokens": 196,
+          "total_tokens": 57069,
+          "cached_read_tokens": 56128,
+          "cached_write_tokens": 0,
+          "duration_ms": 9401,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 15,
+          "attempt_no": 1,
+          "input_tokens": 57394,
+          "output_tokens": 664,
+          "total_tokens": 58058,
+          "cached_read_tokens": 56832,
+          "cached_write_tokens": 0,
+          "duration_ms": 21187,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 16,
+          "attempt_no": 1,
+          "input_tokens": 58108,
+          "output_tokens": 148,
+          "total_tokens": 58256,
+          "cached_read_tokens": 57344,
+          "cached_write_tokens": 0,
+          "duration_ms": 6881,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 17,
+          "attempt_no": 1,
+          "input_tokens": 58702,
+          "output_tokens": 248,
+          "total_tokens": 58950,
+          "cached_read_tokens": 58048,
+          "cached_write_tokens": 0,
+          "duration_ms": 10879,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 18,
+          "attempt_no": 1,
+          "input_tokens": 60412,
+          "output_tokens": 333,
+          "total_tokens": 60745,
+          "cached_read_tokens": 58688,
+          "cached_write_tokens": 0,
+          "duration_ms": 12946,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 19,
+          "attempt_no": 1,
+          "input_tokens": 61255,
+          "output_tokens": 2347,
+          "total_tokens": 63602,
+          "cached_read_tokens": 60352,
+          "cached_write_tokens": 0,
+          "duration_ms": 69090,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 20,
+          "attempt_no": 1,
+          "input_tokens": 63930,
+          "output_tokens": 588,
+          "total_tokens": 64518,
+          "cached_read_tokens": 61248,
+          "cached_write_tokens": 0,
+          "duration_ms": 18674,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 21,
+          "attempt_no": 1,
+          "input_tokens": 64568,
+          "output_tokens": 204,
+          "total_tokens": 64772,
+          "cached_read_tokens": 63872,
+          "cached_write_tokens": 0,
+          "duration_ms": 8736,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 22,
+          "attempt_no": 1,
+          "input_tokens": 71300,
+          "output_tokens": 1862,
+          "total_tokens": 73162,
+          "cached_read_tokens": 64512,
+          "cached_write_tokens": 0,
+          "duration_ms": 48263,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 23,
+          "attempt_no": 1,
+          "input_tokens": 73259,
+          "output_tokens": 189,
+          "total_tokens": 73448,
+          "cached_read_tokens": 71296,
+          "cached_write_tokens": 0,
+          "duration_ms": 7664,
+          "model": "glm-5.3-flash"
+        }
+      ]
+    },
+    {
+      "label": "documentation_follow_up",
+      "task_status": "cancelled",
+      "usage": {
+        "source": "native_model_call_log",
+        "coverage": "completed_model_calls_with_reported_usage",
+        "reported_calls": 12,
+        "calls_without_usage": 0,
+        "input_tokens": 423018,
+        "output_tokens": 3088,
+        "total_tokens": 426106,
+        "cached_read_tokens": 336320,
+        "cached_write_tokens": 0
+      },
+      "calls": [
+        {
+          "step": 1,
+          "attempt_no": 1,
+          "input_tokens": 23774,
+          "output_tokens": 281,
+          "total_tokens": 24055,
+          "cached_read_tokens": 0,
+          "cached_write_tokens": 0,
+          "duration_ms": 6726,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 2,
+          "attempt_no": 1,
+          "input_tokens": 27151,
+          "output_tokens": 288,
+          "total_tokens": 27439,
+          "cached_read_tokens": 0,
+          "cached_write_tokens": 0,
+          "duration_ms": 6203,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 3,
+          "attempt_no": 1,
+          "input_tokens": 28463,
+          "output_tokens": 172,
+          "total_tokens": 28635,
+          "cached_read_tokens": 8704,
+          "cached_write_tokens": 0,
+          "duration_ms": 6216,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 4,
+          "attempt_no": 1,
+          "input_tokens": 28867,
+          "output_tokens": 524,
+          "total_tokens": 29391,
+          "cached_read_tokens": 28416,
+          "cached_write_tokens": 0,
+          "duration_ms": 8034,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 5,
+          "attempt_no": 1,
+          "input_tokens": 29637,
+          "output_tokens": 300,
+          "total_tokens": 29937,
+          "cached_read_tokens": 28864,
+          "cached_write_tokens": 0,
+          "duration_ms": 6513,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 6,
+          "attempt_no": 1,
+          "input_tokens": 34089,
+          "output_tokens": 190,
+          "total_tokens": 34279,
+          "cached_read_tokens": 29632,
+          "cached_write_tokens": 0,
+          "duration_ms": 6071,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 7,
+          "attempt_no": 1,
+          "input_tokens": 37885,
+          "output_tokens": 387,
+          "total_tokens": 38272,
+          "cached_read_tokens": 34048,
+          "cached_write_tokens": 0,
+          "duration_ms": 10839,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 8,
+          "attempt_no": 1,
+          "input_tokens": 40621,
+          "output_tokens": 233,
+          "total_tokens": 40854,
+          "cached_read_tokens": 37824,
+          "cached_write_tokens": 0,
+          "duration_ms": 5971,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 9,
+          "attempt_no": 1,
+          "input_tokens": 41907,
+          "output_tokens": 201,
+          "total_tokens": 42108,
+          "cached_read_tokens": 40576,
+          "cached_write_tokens": 0,
+          "duration_ms": 6156,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 10,
+          "attempt_no": 1,
+          "input_tokens": 42814,
+          "output_tokens": 347,
+          "total_tokens": 43161,
+          "cached_read_tokens": 41856,
+          "cached_write_tokens": 0,
+          "duration_ms": 8011,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 11,
+          "attempt_no": 1,
+          "input_tokens": 43706,
+          "output_tokens": 80,
+          "total_tokens": 43786,
+          "cached_read_tokens": 42752,
+          "cached_write_tokens": 0,
+          "duration_ms": 4489,
+          "model": "glm-5.3-flash"
+        },
+        {
+          "step": 12,
+          "attempt_no": 1,
+          "input_tokens": 44104,
+          "output_tokens": 85,
+          "total_tokens": 44189,
+          "cached_read_tokens": 43648,
+          "cached_write_tokens": 0,
+          "duration_ms": 6881,
+          "model": "glm-5.3-flash"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Actual completed model-call statistics from WorkBuddy native logs; not an estimate and not a billing invoice.",
+    "Repeated input context counts per model call. Cache counters are breakdowns of input and are not added to total_tokens.",
+    "Failed or unreported model calls may not be covered. Context occupancy and latest credit updates are not cumulative token consumption.",
+    "The initial task remained unknown/ACP_TIMEOUT. Its documentation follow-up was cancelled while waiting for another read-only log permission. The final image composition and public summaries were completed from the existing verified files; no DFT was rerun.",
+    "Only numeric metrics, model names, generic phase labels and task outcomes are exported. Raw logs, prompts, private reasoning, account data and native session identifiers remain local."
+  ]
+}

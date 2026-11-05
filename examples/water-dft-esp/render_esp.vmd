@@ -1,0 +1,56 @@
+# VMD headless render: ESP-mapped electron density isosurface of water
+# Inputs (relative, cwd = render dir): water_density.cub, water_esp.cub
+display resize 2400 1800
+display projection Orthographic
+display depthcue off
+display rendermode GLSL
+color Display Background white
+axes location off
+
+# Load density cube (defines isosurface) and ESP cube (defines color)
+mol new water_density.cub
+mol addfile water_esp.cub
+# Remove VMD's default representation so ESP is representation 0.
+mol delrep 0 0
+
+# --- rep 0: density isosurface rho=0.001, colored by ESP volume dataset #1 ---
+mol representation Isosurface 0.001 0 0 0 1 1
+mol color Volume 1
+mol selection {all}
+mol material Diffuse
+mol addrep 0
+mol scaleminmax 0 0 -0.07 0.07
+
+# --- rep 1: covalent bonds visible inside the surface ---
+mol representation Licorice 0.15 25.0
+mol color Element
+mol selection {all}
+mol material Opaque
+mol addrep 0
+
+# --- rep 2: small atom spheres ---
+mol representation VDW 0.22 25.0
+mol color Element
+mol selection {all}
+mol material Opaque
+mol addrep 0
+
+# Red = negative ESP, blue = positive ESP; white = 0 (symmetric +/-0.07 a.u.)
+color scale Method RWB
+color scale midpoint 0.50
+
+# View: molecule axis ~ z; add slight perspective rotation
+rotate x by 0
+rotate y by 90
+rotate z by 90
+scale by 0.85
+translate by 0.0 0.0 0.0
+
+light 0 on
+light 1 on
+light 2 off
+light 3 on
+
+render Tachyon water-esp-scene.dat
+puts "SCENE_WRITTEN"
+quit

@@ -1,0 +1,8 @@
+ Number of surface minima:     1
+   #       a.u.         eV      kcal/mol           X/Y/Z coordinate(Angstrom)
+*    1 -0.05806658   -1.580072  -36.437363      -0.099808  -0.032667   1.937540
+ 
+ Number of surface maxima:     2
+   #       a.u.         eV      kcal/mol           X/Y/Z coordinate(Angstrom)
+     1  0.06794152    1.848783   42.633982      -0.036286  -1.630771  -1.337923
+*    2  0.06795273    1.849088   42.641020      -0.038336   1.636278  -1.331869

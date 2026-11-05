@@ -6,3 +6,9 @@
 *.yml text eol=lf
 *.cmd text eol=crlf
 LICENSE text eol=lf
+
+# Preserve vendor-generated fixed-width and aligned calculation output.
+examples/water-dft-esp/gaussian-output.txt whitespace=-blank-at-eol
+examples/water-dft-esp/multiwfn-output.txt whitespace=-blank-at-eol
+examples/water-dft-esp/surface-extrema.txt whitespace=-blank-at-eol
+examples/water-dft-esp/water.fchk whitespace=-blank-at-eol

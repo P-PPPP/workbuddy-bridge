@@ -84,6 +84,14 @@ npm run configure
 
 这是建议用法，本项目尚未实测 Blender 流程。
 
+### ⚛️ 算一个分子，再画出静电势
+
+> 让 WorkBuddy 使用 WSL Gaussian 和 Multiwfn 技能计算水分子，检查优化结构和频率，把 ESP 图片与计算文件保存到我们的项目文件夹。这次使用 GLM-5.3-Flash，并记录实际 token 用量。
+
+这个流程已经通过 WorkBuddy-Link 实测。计算结果、图片、双语说明与复现文件都在[水分子 DFT → ESP 示例](examples/water-dft-esp/README.zh-CN.md)中。
+
+<img src="examples/water-dft-esp/water-esp.png" alt="WorkBuddy 使用 Gaussian 与 Multiwfn 计算的水分子静电势" width="640">
+
 ### ⏯️ 随时查看或停止
 
 - “WorkBuddy 现在有哪些可用的工具和技能？”
@@ -96,6 +104,7 @@ npm run configure
 |---|---|
 | **会接管已经打开的 WorkBuddy 聊天吗？** | 会新建独立任务会话，不接管已有聊天，也不要期待它出现在桌面聊天历史中。 |
 | **用的是哪个模型？** | 让主助手在执行前询问你；未指定时，WorkBuddy 使用自己的默认选项，可能是 Auto。 |
+| **找不到新模型？** | 更新 WorkBuddy-Link 后重新查询。列出的候选项仍需你的账户具备使用权限。 |
 | **AI 助手连接不上？** | 确认 Node.js 版本不低于 24，重新连接 MCP 服务，并在项目目录运行 `npm run smoke`。 |
 | **提示需要登录？** | 在 WorkBuddy 桌面应用中重新登录，再新建任务会话。 |
 

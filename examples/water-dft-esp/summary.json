@@ -1,0 +1,89 @@
+{
+  "example": "Water DFT and electrostatic-potential surface",
+  "molecule": {
+    "formula": "H2O",
+    "phase": "gas",
+    "charge": 0,
+    "multiplicity": 1
+  },
+  "delegation": {
+    "connector": "WorkBuddy-Link",
+    "model": "glm-5.3-flash",
+    "skills": ["gaussian16-wsl", "multiwfn"],
+    "initial_work_task_status": "unknown",
+    "initial_work_task_note": "The listener wait expired with ACP_TIMEOUT; this is not a confirmed WorkBuddy task completion.",
+    "follow_up_status": "cancelled",
+    "follow_up_note": "The documentation follow-up stopped while requesting another read-only log permission. No DFT was rerun."
+  },
+  "calculation": {
+    "software": "Gaussian 16 Rev. A.03",
+    "method": "B3LYP",
+    "basis_set": "def2TZVP",
+    "route": "Opt=Tight Freq SCF=(Tight,XQC) Integral=UltraFine",
+    "processors": 4,
+    "memory": "2 GB",
+    "normal_terminations": 2,
+    "error_terminations": 0,
+    "optimization_completed": true,
+    "final_scf_energy_hartree": -76.4629956141,
+    "formatted_checkpoint_energy_hartree": -76.46299561409643,
+    "geometry": {
+      "oh_bond_lengths_angstrom": [0.9627061, 0.9627061],
+      "hoh_angle_degrees": 105.24336
+    },
+    "dipole_debye": 2.0636,
+    "harmonic_frequencies_cm_minus_1": [1617.0143, 3785.8927, 3891.0965],
+    "imaginary_frequency_count": 0,
+    "independent_verification_passed": true
+  },
+  "electrostatic_potential": {
+    "software": "Multiwfn 2026.6.2",
+    "density_isovalue_e_per_bohr3": 0.001,
+    "surface_grid_spacing_bohr": 0.2,
+    "export_mode": "Full density and ESP scalar grids; not the restricted -ESPrhoiso grid",
+    "grid_dimensions": [50, 54, 50],
+    "esp_surface_extrema_au": {
+      "minimum": -0.05806658,
+      "maximum": 0.06795273
+    },
+    "esp_surface_extrema_kcal_per_mol": {
+      "minimum": -36.437363,
+      "maximum": 42.64102
+    },
+    "surface_area_angstrom2": {
+      "total": 45.65324,
+      "positive": 22.77612,
+      "negative": 22.87713
+    },
+    "independent_grid_alignment_check_passed": true
+  },
+  "visualization": {
+    "software": "VMD 1.9.3 and Tachyon",
+    "esp_color_range_au": [-0.07, 0.07],
+    "negative_color": "red",
+    "positive_color": "blue",
+    "zero_color": "white",
+    "image": "water-esp.png",
+    "image_dimensions_pixels": [2740, 1890],
+    "molecule_preview": "mol-preview.png"
+  },
+  "evidence_files": [
+    "water.gjf",
+    "water.xyz",
+    "water.fchk",
+    "gaussian-output.txt",
+    "multiwfn-input.txt",
+    "multiwfn-output.txt",
+    "surface-extrema.txt",
+    "water-grids.zip",
+    "verification-calculation.json",
+    "verification-grids.json",
+    "workbuddy-usage.json"
+  ],
+  "limitations": [
+    "This is a gas-phase molecular example, not an experimental measurement or general accuracy benchmark.",
+    "Harmonic frequencies are unscaled.",
+    "Surface extrema depend on the finite grid and surface discretization.",
+    "Gaussian and Multiwfn installations and licenses are not included."
+  ]
+}

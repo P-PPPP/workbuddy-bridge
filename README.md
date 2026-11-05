@@ -84,6 +84,14 @@ The chart below was created through WorkBuddy using OriginPro 2024 and synthetic
 
 This is a suggested workflow; Blender has not been tested in this project.
 
+### ⚛️ Calculate a molecule and draw its ESP
+
+> Have WorkBuddy use its WSL Gaussian and Multiwfn skills to calculate water, check the optimized structure and frequencies, and save an ESP image and the calculation files in our project folder. Use GLM-5.3-Flash and record the actual token usage.
+
+This example was run through WorkBuddy-Link. The calculation, image, bilingual instructions, and files for reproducing it are available in the [water DFT → ESP example](examples/water-dft-esp/).
+
+<img src="examples/water-dft-esp/water-esp.png" alt="Water ESP calculated by WorkBuddy using Gaussian and Multiwfn" width="640">
+
 ### ⏯️ Check in or change direction
 
 - “Which tools and skills can WorkBuddy use?”
@@ -96,6 +104,7 @@ This is a suggested workflow; Blender has not been tested in this project.
 |---|---|
 | **Does it control my open WorkBuddy chat?** | It starts a separate task session. Do not expect it to appear in the desktop chat history. |
 | **Which model does it use?** | Ask your assistant to let you choose first. Otherwise WorkBuddy uses its default, which may be Auto. |
+| **A newer model is missing?** | Update WorkBuddy-Link and ask for the model list again. Listed candidates still need access through your account. |
 | **My assistant cannot connect.** | Check Node.js 24+, reconnect the MCP server, and run `npm run smoke` in this project. |
 | **WorkBuddy asks me to sign in.** | Sign in through the desktop app, then start a new task session. |
 

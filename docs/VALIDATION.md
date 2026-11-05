@@ -31,7 +31,25 @@ Observed limitations were retained rather than hidden:
 
 Private local paths, account information, native session IDs, and full conversation traces are intentionally omitted from this repository.
 
+## Water DFT → ESP demonstration, November 5, 2026
+
+WorkBuddy used **GLM-5.3-Flash** with the configured WSL Gaussian and Multiwfn skills. Gaussian 16 Rev. A.03 optimized gas-phase neutral singlet water at B3LYP/def2TZVP and calculated harmonic frequencies. Multiwfn 2026.6.2 analyzed the wavefunction ESP on the 0.001 e/bohr³ density isosurface and exported full density/ESP grids. VMD 1.9.3/Tachyon rendered the real wavefunction-based surface.
+
+Independent read-only checks confirmed two Gaussian normal terminations, all final optimization criteria, no imaginary frequencies, matching Gaussian/FCHK energies, and aligned 50 × 54 × 50 cube grids. The final energy is −76.4629956141 Hartree; the surface ESP extrema are −0.05806658 / +0.06795273 a.u. The 2740 × 1890 PNG was opened for visual inspection.
+
+The [public example](../examples/water-dft-esp/) includes bilingual instructions, calculation evidence, the formatted checkpoint, compressed grids, rendering scripts, independent checks, and actual reported token counters. Both saved-grid rendering and a fresh Multiwfn-to-image reproduction passed. The latter reproduced the surface-extrema file byte for byte. Seven pre-existing Multiwfn/VMD files were hash-checked and remained unchanged.
+
+Workflow limits are explicit: the initial native turn timed out after the listener's default 30-minute wait and remains `unknown` / `ACP_TIMEOUT`. A new worker continued rendering without rerunning DFT, then ended `cancelled` after another read-only log permission was rejected. The public summaries were completed and checked afterward. Artifact success is not reported as a confirmed native task completion. The two workers reported 35 completed model calls: 1,644,455 input + 19,717 output = 1,664,172 total tokens, including 1,461,760 cached-read tokens. This is not a billing invoice and excludes unreported calls.
+
 ## Ongoing checks
+
+### Model discovery and token reporting, November 5, 2026
+
+The tested WorkBuddy 5.9.3 external ACP session returned a nine-model initialization snapshot that omitted `glm-5.3-flash` and `deepseek-v4.1-flash`, although both existed in the installed official product configuration. The listener previously treated this snapshot as exhaustive and rejected those IDs before asking WorkBuddy.
+
+The adapter now exposes the native snapshot alongside installed, tool-capable candidates, handles native model catalog updates, and requires native acknowledgement when selecting either kind. Installed candidates are explicitly marked as unverified account availability. GLM-5.3-Flash selection was acknowledged and actual response metadata confirmed that model during the water example. DeepSeek-V4.1-Flash was discovered but was not executed in this check.
+
+All **22 automated tests** and the no-model MCP smoke check passed. Added checks cover incomplete model snapshots, native rejection, model updates, numeric-only usage redaction, persistence, context occupancy versus consumption, per-turn log boundaries, duplicate metric records, and missing counters. Native model-call logs provided real input/output/cache counts for the example; these are recorded separately from context occupancy and latest credit updates.
 
 ### WorkBuddy-Link rename, November 5, 2026
 

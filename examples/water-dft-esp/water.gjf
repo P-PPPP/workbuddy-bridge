@@ -1,0 +1,11 @@
+%chk=water.chk
+%mem=2GB
+%nprocshared=4
+#p B3LYP/def2TZVP Opt=Tight Freq SCF=(Tight,XQC) Integral=UltraFine
+
+water gas-phase B3LYP/def2TZVP opt+freq, WorkBuddy end-to-end demo
+
+0 1
+O   0.000000   0.000000   0.000000
+H   0.758600   0.000000   0.504300
+H  -0.758600   0.000000   0.504300
