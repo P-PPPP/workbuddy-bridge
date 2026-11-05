@@ -11,7 +11,7 @@
              |
              | stdio MCP
              v
-WorkBuddy Bridge
+WorkBuddy-Link
   七个工具 + 任务/会话管理 + SQLite 事件记录
              |
              | 原生工作进程管道中的 ACP JSON-RPC
@@ -45,8 +45,8 @@ WorkBuddy Bridge
 在 PowerShell 中执行：
 
 ```powershell
-git clone https://github.com/P-PPPP/workbuddy-bridge.git
-Set-Location workbuddy-bridge
+git clone https://github.com/P-PPPP/WorkBuddy-Link.git
+Set-Location WorkBuddy-Link
 npm ci --ignore-scripts --no-audit --no-fund
 npm test
 npm run smoke
@@ -54,7 +54,7 @@ npm run smoke
 
 单元测试和 smoke 测试不会调用模型，不需要 WorkBuddy 正在运行。实际执行任务时，才需要应用安装文件及有效的桌面登录状态。
 
-项目目前通过 GitHub 分发，**没有发布到 npm**。请使用本地仓库，不要假定可以直接运行 `npx workbuddy-bridge`。
+项目目前通过 GitHub 分发，**没有发布到 npm**。请使用本地仓库，不要假定可以直接运行 `npx workbuddy-link`。
 
 ## 连接其他 MCP 客户端
 
@@ -64,18 +64,18 @@ npm run smoke
 node scripts/print-config.mjs --out mcp-client-config.local.json
 ```
 
-把生成文件中的 `workbuddy-bridge` 条目合并到 MCP 客户端的设置中，保留已有服务，然后重启或重新连接客户端。正常情况下会发现 7 个工具。
+把生成文件中的 `workbuddy-link` 条目合并到 MCP 客户端的设置中，保留已有服务，然后重启或重新连接客户端。正常情况下会发现 7 个工具。
 
-如果之前配置过 `workbuddy-local-worker`，请用生成的 `workbuddy-bridge` 条目替换旧条目，不要同时保留两个。只要文件路径仍然有效，原配置依然可用；七个工具的名称和 `WORKBUDDY_LISTENER_*` 设置保持不变。
+如果之前配置过 `workbuddy-bridge` 或 `workbuddy-local-worker`，请用生成的 `workbuddy-link` 条目替换旧条目，不要同时保留两个。只要文件路径仍然有效，原配置依然可用；七个工具的名称和 `WORKBUDDY_LISTENER_*` 设置保持不变。仓库已改名为 WorkBuddy-Link，原 GitHub 地址目前会跳转到新地址。
 
 等价配置示例，请替换为实际安装位置：
 
 ```json
 {
   "mcpServers": {
-    "workbuddy-bridge": {
+    "workbuddy-link": {
       "command":"node",
-      "args":["C:/tools/workbuddy-bridge/src/server.mjs"]
+      "args":["C:/tools/WorkBuddy-Link/src/server.mjs"]
     }
   }
 }
@@ -220,7 +220,7 @@ Copy-Item listener.config.example.json listener.config.json
     "local-echo": {
       "type":"stdio",
       "command":"node",
-      "args":["C:/tools/workbuddy-bridge/test/fixtures/echo-server.mjs"]
+      "args":["C:/tools/WorkBuddy-Link/test/fixtures/echo-server.mjs"]
     }
   },
   "skills": {

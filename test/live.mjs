@@ -15,7 +15,7 @@ await fs.mkdir(dir, { recursive: true });
 const config = path.join(dir, 'listener.config.json');
 await fs.writeFile(config, JSON.stringify({ mcpServers: { 'listener-test-echo': { type: 'stdio', command: process.execPath, args: [path.join(root, 'test', 'fixtures', 'echo-server.mjs')] } }, skills: { 'listener-test-sentinel': path.join(root, 'test', 'fixtures', 'sentinel-skill', 'SKILL.md') } }));
 const transport = new StdioClientTransport({ command: process.execPath, args: [path.join(root, 'src', 'server.mjs')], cwd: root, env: { ...process.env, WORKBUDDY_LISTENER_DATA: path.join(dir, 'data'), WORKBUDDY_LISTENER_CONFIG: config }, stderr: 'pipe' });
-const client = new Client({ name: 'workbuddy-bridge-integration-test', version: '0.1.0' });
+const client = new Client({ name: 'workbuddy-link-integration-test', version: '0.1.0' });
 transport.stderr.on('data', () => {});
 const report = { started_at: new Date().toISOString(), tests: [], evidence: {}, live_model_requests: 'Short text checks, one selected tool/skill check, and a cancellable response.' };
 const record = (name, detail) => { report.tests.push({ name, passed: true, detail }); process.stdout.write(`PASS ${name}\n`); };

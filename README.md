@@ -1,78 +1,112 @@
-# WorkBuddy Bridge
+<div align="center">
 
-[English](README.md) | [简体中文](README.zh-CN.md)
+<img src="docs/images/cover-en.png" alt="WorkBuddy-Link — one chat, an extra AI teammate" width="100%">
 
-**Use WorkBuddy as a subagent without leaving your AI assistant.**
+# WorkBuddy-Link
 
-Delegate Origin plotting, Blender modeling, and other tasks from your current chat. Ask your main assistant to pass along the relevant context and use the same project folder, then bring WorkBuddy's results back into your main workflow.
+**Let WorkBuddy do the work. Stay in your AI assistant.**
 
-**The bridge is free and needs no separate API key.** WorkBuddy's own account limits and any model charges still apply.
+[![Tests](https://github.com/P-PPPP/WorkBuddy-Link/actions/workflows/test.yml/badge.svg)](https://github.com/P-PPPP/WorkBuddy-Link/actions/workflows/test.yml)
+[![Windows](https://img.shields.io/badge/Windows-0078D4?style=flat)](#-before-you-start)
+[![Node.js](https://img.shields.io/badge/Node.js-24%2B-43853D?style=flat)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-8B5CF6?style=flat)](LICENSE)
 
-## What can you do?
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-- **Stay in one chat.** Your main assistant delegates tasks and collects the results.
-- **Share context and a workspace.** Pass the task brief, decisions, and file paths so WorkBuddy can work with the same local project files.
-- **Use WorkBuddy's tools.** Plot in Origin, model in Blender, or use other MCP tools and skills you have configured.
+</div>
 
-## Get started
+Ask your AI assistant to delegate a task to WorkBuddy, pass along the relevant conversation context, and work in the same project folder. Get charts, models, and other results back in your current chat.
 
-Copy this and send it to your AI assistant to install:
+**The connector is free and needs no separate API key.** Tasks use your WorkBuddy account; its limits and any model charges still apply.
 
-> Install WorkBuddy Bridge for me: https://github.com/P-PPPP/workbuddy-bridge
+## ✨ What you get
 
-[Manual installation](docs/REFERENCE.md#installation)
+| | What it means for you |
+|:---:|---|
+| 💬 **One conversation** | Delegate work and receive results without switching to another chat. |
+| 📂 **Shared project files** | Pass the task brief, agreed requirements, and project folder path together. |
+| 🛠️ **Your existing tools** | Use the MCP tools and skills you have configured in WorkBuddy. |
+| 🎛️ **Your choice of model** | Choose the execution model, check progress, or stop a task. |
 
-## Use it on your current project
+## 🚀 Get started
 
-Tell your AI assistant:
+Copy this and send it to your AI assistant:
 
-> Delegate this task to WorkBuddy. Share the relevant context from our conversation and the path to our current project folder. Ask me which model to use first, then save the results in that folder and report back here.
+```text
+Install WorkBuddy-Link for me: https://github.com/P-PPPP/WorkBuddy-Link
+```
 
-Your assistant chooses what context to send; the full chat history is not synced automatically.
+### 📋 Before you start
 
-## Example: make a chart in Origin
+- A Windows computer with WorkBuddy installed and signed in.
+- [Node.js 24+](https://nodejs.org/) and Git.
+- An AI assistant that supports local MCP servers and can run the installation steps on your computer.
+- For drawing or modeling: the corresponding tool must already work in WorkBuddy.
 
-If Origin MCP is already set up and working in WorkBuddy, ask:
+<details>
+<summary>Prefer to install it manually?</summary>
 
-> Have WorkBuddy use Origin MCP to plot the data we are discussing. Pass along the data file paths, labels, and style requirements from this conversation. Ask me which model to use, then save the chart as PNG and PDF in our current project folder.
+Open PowerShell in the folder where you want to keep the project:
 
-The Origin workflow was tested with OriginPro 2024 using synthetic sine and cosine data. WorkBuddy created the chart below and exported PNG and PDF files:
+```powershell
+git clone https://github.com/P-PPPP/WorkBuddy-Link.git
+Set-Location WorkBuddy-Link
+npm ci --ignore-scripts --no-audit --no-fund
+npm run smoke
+npm run configure
+```
 
-![Sine and cosine chart created in Origin through WorkBuddy](docs/images/origin-demo.png)
+Copy the generated `workbuddy-link` entry into your AI assistant's MCP settings, keeping any existing servers. Reconnect the assistant, then ask it to check WorkBuddy's status. The smoke check does not call a model.
 
-## Example: make a model in Blender
+[Detailed setup and settings](docs/REFERENCE.md#installation)
 
-If Blender MCP is set up in WorkBuddy, try:
+</details>
 
-> Have WorkBuddy use Blender MCP to create a simple desk organizer. Pass along the dimensions and design requirements we agreed on. Ask me which model to use, then save the .blend file and a preview image in our current project folder and return the file paths here.
+## 💬 Just ask your assistant
 
-The Blender example is a suggested workflow; it has not been tested in this project.
+Start with your current project:
 
-You can also ask:
+> Give this task to WorkBuddy. Share the relevant context and our project folder path. Ask me which model to use first, then save the results in that folder and report back here.
 
-> Which MCP tools and skills can WorkBuddy use?
+Your assistant passes the context it selects; the full chat history is not synced automatically.
 
-> Check the progress of my WorkBuddy task.
+### 📈 Draw a chart in Origin
 
-> Stop the current WorkBuddy task.
+> Have WorkBuddy use Origin MCP to plot this data. Include the file paths, labels, and style we agreed on. Ask me which model to use, then save PNG and PDF files in our project folder.
 
-## A few things to know
+The chart below was created through WorkBuddy using OriginPro 2024 and synthetic sine/cosine data. [Test notes](docs/VALIDATION.md#origin-mcp-demonstration)
 
-- **Choose your model.** If you don't, WorkBuddy uses its own default, which may be Auto. Tasks use your WorkBuddy account and normal usage allowance.
-- **These are separate task sessions.** They don't take over an existing desktop chat, and you shouldn't expect them to appear in WorkBuddy's chat history.
-- **WorkBuddy's tools still need to be installed.** This project connects to your setup; it doesn't install Origin or other applications for you.
-- **Keep local data private.** Task messages and results are saved on your computer. Don't upload your `data` folder or account files.
+![Chart created by WorkBuddy through Origin MCP](docs/images/origin-demo.png)
 
-## Need help?
+### 🧊 Make a model in Blender
 
-**Your AI app can't connect?** Check that Node.js 24+ is installed and that you copied the generated settings. From the project folder, run `npm run smoke` to check the connection without calling a model.
+> Have WorkBuddy use Blender MCP to make a desk organizer using the dimensions and design we discussed. Ask me which model to use, then return the .blend file and a preview image in our project folder.
 
-**WorkBuddy needs you to sign in?** Sign in again in the desktop app, then ask your assistant to start a new task session.
+This is a suggested workflow; Blender has not been tested in this project.
 
-For tool details, custom settings, and troubleshooting, see the [technical reference](docs/REFERENCE.md). You can also [report an issue](https://github.com/P-PPPP/workbuddy-bridge/issues).
+### ⏯️ Check in or change direction
 
-Tested with WorkBuddy 5.9.3 on Windows. This is an unofficial project; compatibility may change after WorkBuddy updates.
+- “Which tools and skills can WorkBuddy use?”
+- “Check the progress of my WorkBuddy task.”
+- “Stop the current WorkBuddy task.”
 
-## License
+## ❓ Quick answers
 
-[MIT](LICENSE). Personal and non-commercial use is encouraged; commercial use remains permitted.
+| Question | Answer |
+|---|---|
+| **Does it control my open WorkBuddy chat?** | It starts a separate task session. Do not expect it to appear in the desktop chat history. |
+| **Which model does it use?** | Ask your assistant to let you choose first. Otherwise WorkBuddy uses its default, which may be Auto. |
+| **My assistant cannot connect.** | Check Node.js 24+, reconnect the MCP server, and run `npm run smoke` in this project. |
+| **WorkBuddy asks me to sign in.** | Sign in through the desktop app, then start a new task session. |
+
+[More settings and troubleshooting](docs/REFERENCE.md) · [Report an issue](https://github.com/P-PPPP/WorkBuddy-Link/issues)
+
+## 🔐 Privacy & compatibility
+
+WorkBuddy-Link uses your local WorkBuddy sign-in. Task records stay on your computer; WorkBuddy sends the task and any tool-provided content to the services it uses. Only delegate files and tasks you intend it to access. Do not upload local account files or the `data` folder.
+
+This is an unofficial community project, tested with **WorkBuddy 5.9.3 on Windows**. WorkBuddy updates may require compatibility fixes.
+
+## 📄 License
+
+[MIT](LICENSE). Personal learning and non-commercial use are encouraged as a voluntary preference; commercial use is permitted by the license.

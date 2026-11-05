@@ -1,6 +1,6 @@
 # Third-party notices
 
-The MIT license in this repository applies to WorkBuddy Bridge's project code. Third-party dependencies retain their own notices and licenses, available in their installed packages and the lockfile metadata.
+The MIT license in this repository applies to WorkBuddy-Link's project code. Third-party dependencies retain their own notices and licenses, available in their installed packages and the lockfile metadata.
 
 Direct dependencies:
 

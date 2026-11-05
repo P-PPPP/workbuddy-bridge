@@ -5,7 +5,7 @@ import { Controller } from './controller.mjs';
 import { clean, publicError } from './common.mjs';
 
 const controller = new Controller();
-const server = new McpServer({ name: 'workbuddy-bridge', version: '0.1.0' }, { instructions: 'Controls dedicated native WorkBuddy ACP workers, without screen automation. Send a turn, then get/wait using task_id and cursors. Discover configured MCP servers and skills before selecting them. Started sessions keep their selected MCP/skills; change defaults to create a new session. Permission requests are returned as waiting_for_user; authorize only the exact intended action with a structured interruption reply.' });
+const server = new McpServer({ name: 'workbuddy-link', version: '0.1.0' }, { instructions: 'Controls dedicated native WorkBuddy ACP workers, without screen automation. Send a turn, then get/wait using task_id and cursors. Discover configured MCP servers and skills before selecting them. Started sessions keep their selected MCP/skills; change defaults to create a new session. Permission requests are returned as waiting_for_user; authorize only the exact intended action with a structured interruption reply.' });
 const id = z.string().min(1).max(256);
 const cursor = z.string().regex(/^\d+$/).default('0');
 const read = { task_id: id, after_cursor: cursor, limit: z.number().int().min(1).max(500).default(100), include_partial: z.boolean().default(true) };

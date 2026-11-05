@@ -1,5 +1,5 @@
 {
-  "name": "workbuddy-bridge",
+  "name": "workbuddy-link",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -21,11 +21,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/P-PPPP/workbuddy-bridge.git"
+    "url": "https://github.com/P-PPPP/WorkBuddy-Link.git"
   },
-  "homepage": "https://github.com/P-PPPP/workbuddy-bridge#readme",
+  "homepage": "https://github.com/P-PPPP/WorkBuddy-Link#readme",
   "bugs": {
-    "url": "https://github.com/P-PPPP/workbuddy-bridge/issues"
+    "url": "https://github.com/P-PPPP/WorkBuddy-Link/issues"
   },
   "keywords": [
     "mcp",

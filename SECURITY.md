@@ -1,6 +1,6 @@
 # Security and privacy
 
-WorkBuddy Bridge is a local automation bridge. Its MCP client can ask a signed-in native WorkBuddy worker to use tools and modify files within that worker's capabilities. Run it only for clients and tasks you trust.
+WorkBuddy-Link is a local automation bridge. Its MCP client can ask a signed-in native WorkBuddy worker to use tools and modify files within that worker's capabilities. Run it only for clients and tasks you trust.
 
 ## Boundaries
 

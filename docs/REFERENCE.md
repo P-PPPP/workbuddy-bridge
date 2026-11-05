@@ -11,7 +11,7 @@ Your AI agent / MCP client
          |
          | MCP over stdin/stdout
          v
-WorkBuddy Bridge
+WorkBuddy-Link
   seven tools + task/session state + SQLite event journal
          |
          | ACP JSON-RPC through native worker pipes
@@ -45,8 +45,8 @@ Requirements:
 Clone and install in PowerShell:
 
 ```powershell
-git clone https://github.com/P-PPPP/workbuddy-bridge.git
-Set-Location workbuddy-bridge
+git clone https://github.com/P-PPPP/WorkBuddy-Link.git
+Set-Location WorkBuddy-Link
 npm ci --ignore-scripts --no-audit --no-fund
 npm test
 npm run smoke
@@ -54,7 +54,7 @@ npm run smoke
 
 The unit and smoke tests do not invoke a model. WorkBuddy does not need to be running for them. Runtime use requires its installed files and a valid desktop sign-in.
 
-This repository is distributed through GitHub; it is not published as an npm package. Use a local checkout rather than assuming `npx workbuddy-bridge` is available.
+This repository is distributed through GitHub; it is not published as an npm package. Use a local checkout rather than assuming `npx workbuddy-link` is available.
 
 ## Connect an MCP client
 
@@ -64,18 +64,18 @@ Generate a configuration containing the absolute paths for **your** checkout and
 node scripts/print-config.mjs --out mcp-client-config.local.json
 ```
 
-Merge its `workbuddy-bridge` entry into your client's MCP server settings, preserving existing servers. Restart or reconnect the client. It should discover exactly seven tools.
+Merge its `workbuddy-link` entry into your client's MCP server settings, preserving existing servers. Restart or reconnect the client. It should discover exactly seven tools.
 
-If you previously configured `workbuddy-local-worker`, replace that entry with the generated `workbuddy-bridge` entry rather than keeping both. Existing entries still work if their file paths remain valid; the seven tool names and `WORKBUDDY_LISTENER_*` settings are unchanged.
+If you previously configured `workbuddy-bridge` or `workbuddy-local-worker`, replace that entry with the generated `workbuddy-link` entry rather than keeping both. Existing entries still work if their file paths remain valid; the seven tool names and `WORKBUDDY_LISTENER_*` settings are unchanged. The repository was renamed to WorkBuddy-Link; its previous GitHub URLs currently redirect to the new location.
 
 Equivalent example, with an installation path you must adapt:
 
 ```json
 {
   "mcpServers": {
-    "workbuddy-bridge": {
+    "workbuddy-link": {
       "command": "node",
-      "args": ["C:/tools/workbuddy-bridge/src/server.mjs"]
+      "args": ["C:/tools/WorkBuddy-Link/src/server.mjs"]
     }
   }
 }
@@ -210,7 +210,7 @@ Example local configuration; adapt the absolute paths:
     "local-echo": {
       "type":"stdio",
       "command":"node",
-      "args":["C:/tools/workbuddy-bridge/test/fixtures/echo-server.mjs"]
+      "args":["C:/tools/WorkBuddy-Link/test/fixtures/echo-server.mjs"]
     }
   },
   "skills": {

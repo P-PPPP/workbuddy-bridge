@@ -14,7 +14,7 @@ if (process.env.WORKBUDDY_LISTENER_SKILL_FILE) {
   delete process.env.WORKBUDDY_LISTENER_SKILL_FILE;
 }
 
-function fail(code) { process.stderr.write(`[workbuddy-bridge] ${code}\n`); process.exit(2); }
+function fail(code) { process.stderr.write(`[workbuddy-link] ${code}\n`); process.exit(2); }
 function bytes(value, size) {
   if (typeof value !== 'string') throw Error('format');
   const data = Buffer.from(value, 'base64');
@@ -53,7 +53,7 @@ if (process.env.WORKBUDDY_LISTENER_AUTH !== 'none') {
     if (!session.account?.uid) fail('AUTH_ACCOUNT_MISSING');
     process.env.CODEBUDDY_AUTH_TOKEN = token;
     process.env.ACC_USER_ID = String(session.account.uid);
-    process.env.ACC_USER_NICKNAME = 'WorkBuddy Bridge';
+    process.env.ACC_USER_NICKNAME = 'WorkBuddy-Link';
     process.env.CODEBUDDY_CUSTOM_HEADERS = [`X-User-Id: ${String(session.account.uid).replace(/[\r\n]/g, '')}`, ...(session.auth.domain ? [`X-Domain: ${String(session.auth.domain).replace(/[\r\n]/g, '')}`] : [])].join('\n');
     process.env.CODEBUDDY_DISABLE_PRODUCT_CACHE = '1';
   } catch { fail('DESKTOP_AUTH_UNAVAILABLE'); }

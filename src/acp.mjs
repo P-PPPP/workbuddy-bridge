@@ -52,7 +52,7 @@ export class AcpWorker extends EventEmitter {
     this.child.stdin.on('error', () => {});
     this.child.on('error', () => this.fail(new ListenerError('WORKER_START_FAILED', 'Could not launch the installed WorkBuddy runtime.')));
     this.child.on('exit', (code, signal) => this.fail(new ListenerError('WORKER_EXITED', `WorkBuddy worker exited (code ${code}, signal ${signal}).`)));
-    this.info = await this.request('initialize', { protocolVersion: 1, clientCapabilities: {}, clientInfo: { name: 'workbuddy-bridge', version: '0.1.0' } }, 30000);
+    this.info = await this.request('initialize', { protocolVersion: 1, clientCapabilities: {}, clientInfo: { name: 'workbuddy-link', version: '0.1.0' } }, 30000);
     return this.info;
   }
   frame(frame) {
