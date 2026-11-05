@@ -12,7 +12,7 @@ export class ListenerError extends Error {
 }
 export function clean(value) {
   if (Array.isArray(value)) return value.map(clean);
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([key]) => !/token|secret|authorization|password|ticket|envelope|credential/i.test(key)).map(([key, val]) => [key, clean(val)]));
+  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).filter(([key, val]) => !/token|secret|authorization|password|ticket|envelope|credential/i.test(key) || (/^(input_tokens|output_tokens|total_tokens|thought_tokens|cached_read_tokens|cached_write_tokens)$/.test(key) && Number.isSafeInteger(val) && val >= 0)).map(([key, val]) => [key, clean(val)]));
   if (typeof value === 'string') return value.replace(/Bearer\s+[A-Za-z0-9._~+/=-]+/gi, 'Bearer [redacted]');
   return value;
 }

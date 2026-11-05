@@ -93,8 +93,8 @@ node scripts/print-config.mjs --out mcp-client-config.local.json
 
 1. 调用 `get_status`，参数为 `{}`，查看服务状态与 MCP/技能列表；此操作不发送模型请求。
 2. 如需指定 MCP 或技能，先设置新会话默认选择。
-3. 调用 `select_model`，参数为 `{}`，创建空闲原生会话并查询实际可用模型。保存返回的 `session_id`。这会加载本机账户和原生会话，但不提交提示词。
-4. 请用户从可用模型中选择，再对同一个会话调用：
+3. 调用 `select_model`，参数为 `{}`，创建空闲原生会话，查询原生模型快照及安装包中的候选模型。保存返回的 `session_id`。这会加载本机账户和原生会话，但不提交提示词。
+4. 请用户选择模型，再对同一个会话调用；安装包候选项仍需原生确认及账户权限：
 
 ```json
 {"session_id":"<返回的 session_id>","model_id":"<用户选择的实际模型 ID>"}
@@ -158,7 +158,11 @@ node scripts/print-config.mjs --out mcp-client-config.local.json
 
 ### 3. `select_model`
 
-不传 `model_id` 时列出原生会话实际可用模型；提供准确 ID 时，通过 `session/set_model` 切换并等待原生确认。不传 `session_id` 时创建空闲会话。
+不传 `model_id` 时列出模型选择；提供准确 ID 时，通过 `session/set_model` 切换并等待原生确认。不传 `session_id` 时创建空闲会话。
+
+- `available_models`：原生 ACP 会话快照，部分 WorkBuddy 版本向外部客户端返回的列表较旧、不完整。
+- `configured_models`：从已安装的官方产品配置读取、支持工具调用的候选项，标记为 `account_availability: "not_verified"`。出现在安装包中不代表账户已获使用权限。
+- `catalog_note`：说明两种来源。原生接口拒绝切换时保留原选择；即使切换已确认，实际执行时仍可能因账户权限被服务拒绝。
 
 模型配置只能在会话空闲时查询或变更。可用性取决于当前账户和运行时，不应把历史示例或显示名称当作固定模型 ID。任务的 `get_status` 会区分 `selected_model` 与原生元数据提供的实际 `response_model`。
 
@@ -177,6 +181,14 @@ node scripts/print-config.mjs --out mcp-client-config.local.json
 `ready` 仅表示 MCP 服务已经就绪，不代表账户仍然有效或模型调用一定成功。账户与模型权限会在原生执行时得到实际验证。
 
 状态包括 `starting`、`running`、`waiting_for_user`、`cancelling`、`completed`、`cancelled`、`failed`、`unknown`。工作进程已连接不等于任务正在执行；没有新消息也不等于任务已完成。
+
+#### Token 用量
+
+`get_message`、`wait_for_message` 和任务 `get_status` 在取得真实计数时返回 `usage`。任务结束时优先采用原生提示词响应中的统计；若缺失，则只读取本服务所属工作进程的逐次模型调用统计，限定为本轮新增的日志字节及原生会话，去除重复调用。不会由该统计器返回原始日志、提示词或生成内容。
+
+`usage.source` 区分 `native_prompt_response` 和 `native_model_call_log`。日志回退还会返回 `reported_calls`、`calls_without_usage` 及统计覆盖范围。字段可能包括输入、输出、总量及缓存读写 token。**缓存是单独的细分项，不应再加到总量上。** 每次实际请求中重复传入的上下文会再次计入输入。这些是服务报告的用量，不是账单；未报告或失败调用可能未被覆盖。日志格式改变或无法取得计数时返回 `usage: null`，不会估算成零。
+
+`context_usage.used` / `size` 表示最新的**上下文占用及容量**，不是累计 token 消耗。`last_reported_cost` 只保留最新原生费用更新，不累加，也不自行假定货币单位。二者均不能替代 token 统计。
 
 ### 6. `stop_task`
 
@@ -313,7 +325,7 @@ npm run test:live
 | 手动运行后一直等待 | stdio 服务在等待 MCP 客户端输入，并非聊天终端。 |
 | `WORKER_START_FAILED` / 工作进程立即退出 | 检查安装目录与兼容版本；不要直接公开可能涉及账户数据的原始诊断输出。 |
 | 认证缺失或被拒绝 | 在同一 Windows 用户下重新登录 WorkBuddy，然后新建会话；私有接口变化可能需要更新适配器。 |
-| `MODEL_NOT_AVAILABLE` | 重新查询原生可用 ID，避免使用显示名称或过期示例。 |
+| `MODEL_NOT_AVAILABLE` | 刷新两份模型列表并使用准确 ID；安装包候选项仍需原生确认和账户权限。 |
 | `SESSION_BUSY` | 先等待或停止活跃任务，再提交消息或变更配置。 |
 | `SESSION_EXPIRED` | 新建会话；旧的公开回复仍可从记录中读取。 |
 | `waiting_for_user` | 检查具体权限/问题，再用 `send_message` 结构化回答。 |

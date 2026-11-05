@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { Controller } from '../src/controller.mjs';
-import { ListenerError } from '../src/common.mjs';
+import { ListenerError, clean } from '../src/common.mjs';
 import { workerEnvironment } from '../src/acp.mjs';
 
 class FakeWorker extends EventEmitter {
@@ -113,6 +113,46 @@ test('model selection validates actual models and rejects busy changes', async t
   await assert.rejects(c.selectModel({ session_id: selected.session_id, model_id: 'missing' }), e => e.code === 'MODEL_NOT_AVAILABLE');
   const task = await c.sendMessage({ session_id: selected.session_id, message: 'hello' });
   await assert.rejects(c.selectModel({ session_id: selected.session_id, model_id: 'auto' }), e => e.code === 'SESSION_BUSY'); await running(c, task);
+});
+
+test('installed model candidates can be selected beyond the ACP snapshot only after native acknowledgement', async t => {
+  const { c, workers } = await setup(t);
+  c.modelCatalog = async () => [{ modelId: 'new-configured-model', source: 'installed_product_config', account_availability: 'not_verified' }];
+  const initial = await c.selectModel();
+  const changed = await c.selectModel({ session_id: initial.session_id, model_id: 'new-configured-model' });
+  assert.equal(changed.selected_model, 'new-configured-model');
+  assert.equal(changed.available_models.some(m => m.modelId === 'new-configured-model'), false);
+  assert.equal(changed.configured_models[0].account_availability, 'not_verified');
+  const native = workers[0].request.bind(workers[0]);
+  workers[0].request = (method, args) => method === 'session/set_model' ? Promise.reject(new ListenerError('ACP_ERROR', 'Native rejection')) : native(method, args);
+  await assert.rejects(c.selectModel({ session_id: initial.session_id, model_id: 'auto' }), e => e.code === 'ACP_ERROR');
+  assert.equal(c.getSession(initial.session_id).model, 'new-configured-model');
+});
+
+test('native model_update refreshes the session model catalog', async t => {
+  const { c, workers } = await setup(t); const initial = await c.selectModel();
+  workers[0].emit('notification', { method: 'session/update', params: { update: { sessionUpdate: 'model_update', availableModels: [{ id: 'fresh-model', name: 'Fresh' }], currentModelId: 'fresh-model' } } });
+  const refreshed = await c.selectModel({ session_id: initial.session_id });
+  assert.equal(refreshed.available_models[0].modelId, 'fresh-model');
+  assert.equal(refreshed.selected_model, 'fresh-model');
+});
+
+test('native token consumption is persisted separately from context occupancy', async t => {
+  const { c, workers, dir } = await setup(t); const task = await c.sendMessage({ message: 'hello' }); await running(c, task);
+  workers[0].emit('notification', { method: 'session/update', params: { update: { sessionUpdate: 'usage_update', used: 90, size: 128000 } } });
+  assert.equal(c.getMessage({ task_id: task.task_id }).usage, null);
+  assert.equal(c.getMessage({ task_id: task.task_id }).context_usage.used, 90);
+  workers[0].promptResolve({ stopReason: 'end_turn', usage: { inputTokens: 1200, outputTokens: 40, totalTokens: 1240, cachedReadTokens: 1000, cachedWriteTokens: 0, _meta: { secret: 'never expose' } } });
+  await terminal(c, task);
+  assert.deepEqual(c.getMessage({ task_id: task.task_id }).usage, { source: 'native_prompt_response', input_tokens: 1200, output_tokens: 40, total_tokens: 1240, cached_read_tokens: 1000, cached_write_tokens: 0 });
+  await c.close(); c.testClosed = true;
+  const recovered = new Controller({ dataDir: dir });
+  try { assert.equal((await recovered.getStatus({ task_id: task.task_id })).usage.total_tokens, 1240); }
+  finally { await recovered.close(); }
+});
+
+test('only allowlisted numeric token counters survive credential redaction', () => {
+  assert.deepEqual(clean({ input_tokens: 42, output_tokens: 0, cached_read_tokens: -1, total_tokens: 'secret', accessToken: 'secret', authorization: 'Bearer secret', token: 22, usage: { input_tokens: Infinity } }), { input_tokens: 42, output_tokens: 0, usage: {} });
 });
 test('MCP/skill selection rejects missing packages and mutation of started workers', async t => {
   const { c } = await setup(t); await assert.rejects(c.selectMcpOrSkills({ skills: ['missing-test-skill-94827'] }), e => e.code === 'SKILL_NOT_FOUND');

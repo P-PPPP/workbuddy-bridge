@@ -6,10 +6,21 @@ import { AcpWorker } from './acp.mjs';
 import { Journal } from './journal.mjs';
 import { STATE, TERMINAL, ListenerError, clean, publicError, now } from './common.mjs';
 import { catalogs, publicCatalog, resolveSelection } from './catalog.mjs';
+import { installedModels } from './models.mjs';
+import { captureUsageBoundary, readWorkerUsage } from './usage.mjs';
+
+function reportedUsage(value) {
+  if (!value || typeof value !== 'object') return undefined;
+  const result = {};
+  for (const [native, output] of Object.entries({ inputTokens:'input_tokens', outputTokens:'output_tokens', totalTokens:'total_tokens', thoughtTokens:'thought_tokens', cachedReadTokens:'cached_read_tokens', cachedWriteTokens:'cached_write_tokens' })) {
+    const n = value[native]; if (Number.isSafeInteger(n) && n >= 0) result[output] = n;
+  }
+  return Object.keys(result).length ? { source: 'native_prompt_response', ...result } : undefined;
+}
 
 export class Controller {
-  constructor({ dataDir = STATE, workerFactory = options => new AcpWorker(options) } = {}) {
-    this.dataDir = dataDir; this.workerFactory = workerFactory; this.journal = new Journal(path.join(dataDir, 'journal.sqlite'));
+  constructor({ dataDir = STATE, workerFactory = options => new AcpWorker(options), modelCatalog = installedModels } = {}) {
+    this.dataDir = dataDir; this.workerFactory = workerFactory; this.modelCatalog = modelCatalog; this.journal = new Journal(path.join(dataDir, 'journal.sqlite'));
     this.bus = new EventEmitter(); this.bus.setMaxListeners(200); this.live = new Map(); this.sessions = new Map(); this.submissionTail = Promise.resolve(); this.closing = false;
     this.defaults = this.journal.getMeta('defaults', { model: undefined, mcp_servers: [], skills: [] });
     for (const s of this.journal.sessions()) { s.connection = 'disconnected'; s.active_task_id = null; this.sessions.set(s.id, s); this.journal.saveSession(s); }
@@ -58,9 +69,15 @@ export class Controller {
     if (u.sessionUpdate === 'config_option_update') {
       const model = u.configOptions?.find(x => x.category === 'model' || x.id === 'model');
       if (model) { s.model = model.currentValue; s.models = model.options?.map(x => ({ modelId: x.value, name: x.name })) ?? s.models; this.saveSession(s); }
+    } else if (u.sessionUpdate === 'model_update') {
+      if (Array.isArray(u.availableModels)) s.models = u.availableModels.map(m => ({ ...m, modelId: m.modelId ?? m.id }));
+      if (typeof u.currentModelId === 'string') s.model = u.currentModelId;
+      this.saveSession(s);
     }
     const task = s.active_task_id && this.journal.task(s.active_task_id);
     if (!task || TERMINAL.has(task.status)) return;
+    const actualModel = u._meta?.['codebuddy.ai/responseModelId'] ?? frame.params?._meta?.['codebuddy.ai/responseModelId'];
+    if (typeof actualModel === 'string') { task.response_model = actualModel; this.journal.saveTask(task); }
     if (u.sessionUpdate === 'agent_message_chunk') {
       const text = u.content?.text ?? '';
       task.response_model = u._meta?.['codebuddy.ai/responseModelId'] ?? task.response_model;
@@ -71,6 +88,12 @@ export class Controller {
       if (task.phase !== 'thinking') { task.phase = 'thinking'; this.emit(task, { type: 'activity', phase: 'thinking' }); }
     } else if (u.sessionUpdate === 'tool_call' || u.sessionUpdate === 'tool_call_update') {
       this.emit(task, { type: 'tool_activity', tool_call_id: u.toolCallId, title: u.title, status: u.status, content: u.content, raw_output: u.rawOutput });
+    } else if (u.sessionUpdate === 'usage_update') {
+      const occupancy = {};
+      for (const key of ['used', 'size']) if (Number.isSafeInteger(u[key]) && u[key] >= 0) occupancy[key] = u[key];
+      if (Object.keys(occupancy).length) task.context_usage = { source: 'native_usage_update', meaning: 'context_occupancy_not_cumulative_token_consumption', ...occupancy };
+      if (typeof u.cost?.amount === 'number' && Number.isFinite(u.cost.amount) && u.cost.amount >= 0) task.last_reported_cost = { amount: u.cost.amount, currency: u.cost.currency, scope: 'latest_native_update' };
+      this.emit(task, { type: 'usage_update', context_usage: task.context_usage, last_reported_cost: task.last_reported_cost });
     } else if (u.sessionUpdate === 'session_info_update') {
       const phase = u._meta?.['codebuddy.ai/agentPhase']?.phase;
       if (phase && phase !== task.phase) { task.phase = phase; this.emit(task, { type: 'activity', phase }); }
@@ -108,17 +131,22 @@ export class Controller {
     setImmediate(() => this.runTask(s, t.id).catch(() => {}));
     return this.taskSummary(t);
   }
-  taskSummary(t) { return clean({ task_id: t.id, session_id: t.session_id, status: t.status, error: t.error ?? null }); }
+  taskSummary(t) { return clean({ task_id: t.id, session_id: t.session_id, status: t.status, error: t.error ?? null, usage: t.usage ?? null, context_usage: t.context_usage, last_reported_cost: t.last_reported_cost }); }
   async runTask(s, id) {
     let task = this.getTask(id);
     try {
       const live = await this.ensureWorker(s);
       task = this.getTask(id); if (TERMINAL.has(task.status)) return;
       if (task.cancel_requested) { this.setState(task, 'cancelled'); return; }
+      const profileDir = path.join(this.dataDir, 'workers', s.id);
+      const usageBoundary = await captureUsageBoundary(profileDir);
+      task = this.getTask(id); if (TERMINAL.has(task.status)) return;
+      if (task.cancel_requested) { this.setState(task, 'cancelled'); return; }
       this.setState(task, 'running');
       const result = await live.worker.request('session/prompt', { sessionId: s.native_session_id, prompt: [{ type: 'text', text: task.message }] }, Number(process.env.WORKBUDDY_LISTENER_TASK_TIMEOUT_MS ?? 1800000));
       task = this.getTask(id); if (TERMINAL.has(task.status)) return;
       task.native_stop_reason = result.stopReason;
+      task.usage = reportedUsage(result.usage) ?? await readWorkerUsage(profileDir, s.native_session_id, usageBoundary);
       const nativeError = result._meta?.['codebuddy.ai/errorMessage'] ?? result.errorMessage;
       if (result.stopReason === 'cancelled') this.setState(task, 'cancelled');
       else if (nativeError || result.stopReason === 'refusal') {
@@ -161,12 +189,14 @@ export class Controller {
     const s = session_id ? this.getSession(session_id) : await this.newSession();
     if (s.active_task_id) throw new ListenerError('SESSION_BUSY', 'Cannot change/list model configuration during an active turn.');
     const live = await this.ensureWorker(s);
+    const configured = await this.modelCatalog();
     if (model_id) {
-      if (!s.models.some(m => m.modelId === model_id)) throw new ListenerError('MODEL_NOT_AVAILABLE', 'Select one of the runtime-reported model IDs.');
-      await live.worker.request('session/set_model', { sessionId: s.native_session_id, modelId: model_id });
+      if (![...s.models, ...configured].some(m => m.modelId === model_id)) throw new ListenerError('MODEL_NOT_AVAILABLE', 'Select a runtime-listed or installed-configured model ID. Configured models still require native acknowledgement and account access.');
+      const ack = await live.worker.request('session/set_model', { sessionId: s.native_session_id, modelId: model_id });
+      if (ack?.modelId && ack.modelId !== model_id) throw new ListenerError('MODEL_ACK_MISMATCH', 'WorkBuddy acknowledged a different model; no prompt was sent.');
       s.model = model_id; this.saveSession(s);
     }
-    return { session_id: s.id, selected_model: s.model, available_models: s.models, acknowledged: true };
+    return { session_id: s.id, selected_model: s.model, available_models: s.models, configured_models: configured, catalog_note: 'available_models is the native session snapshot and may be incomplete. configured_models are installed candidates, not verified account entitlements. Selection requires native acknowledgement; actual execution can still be rejected by the service.', acknowledged: true };
   }
   async selectMcpOrSkills(args = {}) {
     const catalog = await catalogs();

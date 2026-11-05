@@ -91,8 +91,8 @@ Do not configure this worker to load itself as one of WorkBuddy's selected MCP s
 
 1. Call `get_status` with `{}` to inspect listener state and available MCP/skill names. This does not start a model request.
 2. Select MCP servers and skills for new sessions, if needed, before starting a worker.
-3. Call `select_model` with `{}` to create an idle native session and list runtime-reported models. Save the returned `session_id`. This loads the native account/session but does not send a prompt.
-4. Ask the user to choose an available model, then select it for that session:
+3. Call `select_model` with `{}` to create an idle native session. It returns the native model snapshot and installed model candidates. Save the returned `session_id`. This loads the native account/session but does not send a prompt.
+4. Ask the user to choose a model, then select it for that session. An installed candidate still needs native acknowledgement and account access:
 
 ```json
 {"session_id":"<returned session_id>","model_id":"<user-chosen runtime model ID>"}
@@ -154,7 +154,11 @@ Returns events, `next_cursor`, `has_more`, task status, and `answer` on terminal
 
 ### `select_model`
 
-Omit `model_id` to list the native session's available models; supply it to select an exact runtime-reported ID. Omit `session_id` to create an idle session. Changes require an idle session and are acknowledged by WorkBuddy through `session/set_model`.
+Omit `model_id` to list model choices; supply it to select an exact ID. Omit `session_id` to create an idle session. Changes require an idle session and are acknowledged by WorkBuddy through `session/set_model`.
+
+- `available_models`: the native ACP session snapshot. Some WorkBuddy versions return an older, incomplete list to external clients.
+- `configured_models`: tool-capable candidates read from the installed official product configuration. Each is marked `account_availability: "not_verified"`; being configured is not proof of account access.
+- `catalog_note`: explains these two sources. A native rejection leaves the prior selection intact. An acknowledged selection can still fail when the service checks access during execution.
 
 No hard-coded model list is authoritative. Availability depends on the native runtime and signed-in account. `get_status` for a task distinguishes `selected_model` from `response_model` when native metadata provides the latter.
 
@@ -171,6 +175,14 @@ Uses the same inputs as `get_message`, plus `timeout_seconds` (default 30; range
 `ready` means the MCP server is ready. It does not prove the desktop account is still signed in or a model call will succeed. Authentication and entitlement are exercised when the native worker executes.
 
 Task states include `starting`, `running`, `waiting_for_user`, `cancelling`, `completed`, `cancelled`, `failed`, and `unknown`. A connected worker and a running task are different states. Preserve native error/cancellation outcomes rather than interpreting silence as completion.
+
+### Token usage
+
+Task reads (`get_message`, `wait_for_message`, and task `get_status`) expose `usage` when real counters are available. At the end of a turn, the server prefers native prompt-response counters. If those are absent, it reads only completed model-call metric records from that listener-owned worker's local logs, bounded to bytes added during this turn and filtered to its native session. Duplicate calls are counted once; prompts and raw log payloads are never returned by this collector.
+
+`usage.source` distinguishes `native_prompt_response` from `native_model_call_log`. The log fallback also reports `reported_calls`, `calls_without_usage`, and its coverage. Counters can include `input_tokens`, `output_tokens`, `total_tokens`, `cached_read_tokens`, and `cached_write_tokens`. Cache counts are separate breakdowns: **do not add them to `total_tokens`**. Repeated input context counts again for each actual model call. These are provider-reported usage records, not a billing invoice; unreported or failed calls may be absent. Missing/changed logs or missing counters yield `usage: null`, never an estimated zero.
+
+`context_usage.used` / `size` describe the latest **context occupancy and capacity**, not cumulative token consumption. `last_reported_cost` is only the latest native cost update; it is not summed or assumed to use a monetary currency. Neither field substitutes for token counters.
 
 ### `stop_task`
 
@@ -303,7 +315,7 @@ The original local prototype passed 13 automated tests and 12 live checks on Nov
 | Server appears to wait forever when launched manually | stdio requires an MCP client; this is expected for `npm start` without one. |
 | `WORKER_START_FAILED` / immediate `WORKER_EXITED` | Verify the WorkBuddy installation path and supported runtime version. Native worker stderr is not a safe place to publish account diagnostics. |
 | Authentication unavailable/refused | Sign in again in WorkBuddy under the same Windows user, then start a new managed session. A private storage/API change may need an adapter update. |
-| `MODEL_NOT_AVAILABLE` | List current runtime IDs; select an available ID rather than a display label or historical example. |
+| `MODEL_NOT_AVAILABLE` | Refresh both model lists; use an exact ID. Installed candidates still require native acknowledgement and account access. |
 | `SESSION_BUSY` | Wait for or stop the active turn before changing configuration or sending another turn. |
 | `SESSION_EXPIRED` | Create a new session; old journaled results remain readable. |
 | `waiting_for_user` | Inspect and answer the exact native permission/question through `send_message`. |
